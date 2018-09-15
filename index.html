@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link href="https://fonts.googleapis.com/css?family=Playball" rel="stylesheet">
+		<title>Did Yankees Win?</title>
+		<style>
+			body {
+				background: #0C2340;
+				font-family: 'Playball';			
+				color: #fff;
+				margin: 0;
+			}
+			.wrapper {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				height: 100vh;
+				text-align: center;
+				width: 100%;
+			}
+			h1 {
+				color: #ddd;
+				font-size: 3em;
+				margin: 0;
+				margin-bottom: 0.5em;
+				padding: 0 5%;
+			}
+			p {
+				font-size: 2em;
+				margin: 0;
+				padding: 0 5%;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div class="wrapper">
+			<div id="question">
+				<h1></h1>
+			</div>
+			<div id="answer">
+				<p></p>
+			</div>
+		</div>
+
+		<script>
+			$.ajax({
+				url: "https://statsapi.mlb.com/api/v1/schedule?sportId=1&teamId=147",
+			}).done(function(data) {
+				data.dates.forEach(function(date) {
+			    
+				    date.games.forEach(function(game){
+				      	//console.log(game.teams);
+				    	if(game.teams.away.team.id == '147') {
+				        	console.log('Did the ' + game.teams.away.team.name + ' win?');
+				        	console.log(game.teams.away.isWinner ? 'yes' : 'no'); 
+			        	 	$("#question h1").html('Did the ' + game.teams.away.team.name + ' win?');
+				        	$("#answer p").html(game.teams.away.isWinner ? 'yes' : 'no');
+ 				      	} else {
+				        	console.log('Did the ' + game.teams.home.team.name + ' win?');
+				        	console.log(game.teams.home.isWinner ? 'yes' : 'no'); 
+				        	$("#question h1").html('Did the ' + game.teams.home.team.name + ' win?');
+				        	$("#answer p").html(game.teams.home.isWinner ? 'yes' : 'no');
+				      	}
+				    });
+			  	});
+			});
+		</script>
+	</body>
+</html>
